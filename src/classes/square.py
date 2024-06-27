@@ -1,6 +1,7 @@
 import pygame
 
 class Square:
+    # Each square has a width and height of 80 pixels
     WIDTH = 80
     HEIGHT = 80
     
@@ -26,7 +27,7 @@ class Square:
         self.color = 'light' if (x + y) % 2 == 0 else 'dark'
         self.draw_color = (220, 208, 194) if self.color == 'light' else (53, 53, 53)
         self.highlight_color = (100, 249, 83) if self.color == 'light' else (0, 228, 10)
-        self.rect = pygame.rect(
+        self.rect = pygame.Rect(
             self.abs_x,
             self.abs_y,
             Square.WIDTH,
@@ -36,7 +37,7 @@ class Square:
     # Get coordinate of Square in Chess terms (Coordinate (0, 0) would be 'a1')
     def get_coord(self):
         files = 'abcdefgh'
-        return files[self.x] + str(self.y + 1)
+        return files[self.x] + str(8 - self.y)
     
     def draw(self, display):
         # Draw the square
@@ -46,5 +47,7 @@ class Square:
             pygame.draw.rect(display, self.draw_color, self.rect)
             
         # Draw the piece
+        '''
         if self.occupying_piece is not None:
             display.bilt(self.occupying_piece.img, self.abs_pos)
+        '''
