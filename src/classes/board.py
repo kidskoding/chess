@@ -48,16 +48,18 @@ class Board:
         square.isHighlighted = True
     
     def handle_click(self, mx, my):
-        for row in self.squares:
-            for square in row:
-                square.isHighlighted = False
         x, y = mx // self.tile_width, my // self.tile_height
         clicked_square = self.get_square((x, y))
-        if clicked_square.occupying_piece != None:
-            self.highlight_square(clicked_square)
-            available_moves = clicked_square.occupying_piece.get_available_moves(self)
-            for square in available_moves:
-                self.highlight_square(square)
+        if((self.white_turn and clicked_square.occupying_piece.isWhite) 
+           or (not self.white_turn and not clicked_square.occupying_piece.isWhite)):
+            for row in self.squares:
+                for square in row:
+                    square.isHighlighted = False
+            if clicked_square.occupying_piece != None:
+                self.highlight_square(clicked_square)
+                available_moves = clicked_square.occupying_piece.get_available_moves(self)
+                for square in available_moves:
+                    self.highlight_square(square)
     
     def draw(self, display):
         for row in self.squares:
