@@ -21,6 +21,7 @@ class Board:
     def __init__(self):
         self.tile_width = self.WIDTH // 8
         self.tile_height = self.HEIGHT // 8
+        self.white_turn = True
         self.squares = [[Square(x, y) for y in range(8)] for x in range(8)]
         self.config = [
             ['bR', 'bN', 'bB', 'bQ', 'bK', 'bB', 'bN', 'bR'],
@@ -39,9 +40,24 @@ class Board:
             for square in row:
                 if (square.x, square.y) == (pos[0], pos[1]):
                     return square
-            
+                
     def get_piece(self, pos):
         return self.get_square(self, pos).occupying_piece
+                
+    def highlight_square(self, square):
+        square.isHighlighted = True
+    
+    def handle_click(self, mx, my):
+        for row in self.squares:
+            for square in row:
+                square.isHighlighted = False
+        x, y = mx // self.tile_width, my // self.tile_height
+        clicked_square = self.get_square((x, y))
+        if clicked_square.occupying_piece != None:
+            self.highlight_square(clicked_square)
+            available_moves = clicked_square.occupying_piece.get_available_moves(self)
+            for square in available_moves:
+                self.highlight_square(square)
     
     def draw(self, display):
         for row in self.squares:
@@ -51,6 +67,11 @@ class Board:
     def setup_board(self):
         for y, row in enumerate(self.config):
             for x, piece in enumerate(row):
+                self.get_square((2, 5)).occupying_piece = Pawn(
+                    (2, 5),
+                    False,
+                    self
+                )
                 if(piece != ''):
                     square = self.get_square((x, y))
                       

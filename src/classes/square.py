@@ -51,3 +51,7 @@ class Square:
             centering_rect = self.occupying_piece.img.get_rect()
             centering_rect.center = self.rect.center
             display.blit(self.occupying_piece.img, centering_rect.topleft)
+    
+        # Check if square has a piece occupied
+    def is_occupied(self):
+        return self.occupying_piece != None
