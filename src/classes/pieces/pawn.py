@@ -5,8 +5,6 @@ from classes.Piece import Piece
 class Pawn(Piece):
     def __init__(self, pos, isWhite, board):
         super().__init__(pos, isWhite, board)
-        self.x = pos[0]
-        self.y = pos[1]
         if(self.isWhite):
             self.img = pygame.image.load('src/imgs/w_pawn.png')
         else:
@@ -19,9 +17,9 @@ class Pawn(Piece):
         direction = -1 if self.isWhite else 1
         current_x, current_y = self.x, self.y
         
-        original_square = board.get_square((current_x, current_y + direction))
-        if(not original_square.is_occupied()):
-            available_moves.append(original_square)        
+        default_move = board.get_square((current_x, current_y + direction))
+        if(self.can_move(default_move)):
+            available_moves.append(default_move)        
             if(current_y == 6 or current_y == 1):
                 direction = direction - 1 if self.isWhite else direction + 1
                 available_moves.append(board.get_square((current_x, current_y + direction)))
@@ -33,7 +31,7 @@ class Pawn(Piece):
         if(current_x < 7): available_captures.append(board.get_square((current_x + 1, temp_y)))
 
         for capture in available_captures:
-            if capture.occupying_piece != None:
+            if self.can_capture(capture):
                 available_moves.append(capture)
         
         return available_moves
