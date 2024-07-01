@@ -82,16 +82,9 @@ class Board:
                 if(piece != ''):
                     square = self.get_square((x, y))
                     
-                    # test piece
-                    self.get_square((1, 5)).occupying_piece = Pawn(
-                        (1, 5),
-                        False,
-                        self
-                    )
-                    
                     self.get_square((4, 4)).occupying_piece = Knight(
                         (4, 4),
-                        True,
+                        False,
                         self
                     )
                     

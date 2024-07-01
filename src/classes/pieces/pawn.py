@@ -22,7 +22,9 @@ class Pawn(Piece):
             available_moves.append(default_move)        
             if(current_y == 6 or current_y == 1):
                 direction = direction - 1 if self.isWhite else direction + 1
-                available_moves.append(board.get_square((current_x, current_y + direction)))
+                extra_move = board.get_square((current_x, current_y + direction))
+                if(self.can_move(extra_move)):
+                    available_moves.append(extra_move)
         
         temp_y = current_y - 1 if self.isWhite else current_y + 1
         
