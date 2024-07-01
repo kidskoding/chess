@@ -17,8 +17,10 @@ class Piece():
         self.x, self.y = new_square.pos
         new_square.occupying_piece = self
         
-    def capture(self):
-        pass
+    def capture(self, new_square):
+        new_square.occupying_piece = None
+        self.move(new_square)
+        
     
     # Checks if the piece can move to a different square on the board
     def can_move(self, new_square):

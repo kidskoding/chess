@@ -56,6 +56,7 @@ class Board:
     def handle_click(self, mx, my):
         x, y = mx // self.tile_width, my // self.tile_height
         selected_square = self.get_square((x, y))
+        print(selected_square.occupying_piece)
         if(selected_square.occupying_piece != None 
             and ((self.white_turn and selected_square.occupying_piece.isWhite) 
             or (not self.white_turn and not selected_square.occupying_piece.isWhite))):
@@ -81,7 +82,6 @@ class Board:
     def handle_second_click(self, selected_square):
         for square in self.previous_square.occupying_piece.get_available_moves(self):
             if selected_square == square:
-                print('Runs')
                 if selected_square.occupying_piece == None: 
                     self.previous_square.occupying_piece.move(selected_square)
                     self.previous_square.occupying_piece = None
