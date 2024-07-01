@@ -81,12 +81,17 @@ class Board:
     def handle_second_click(self, selected_square):
         for square in self.previous_square.occupying_piece.get_available_moves(self):
             if selected_square == square:
-                if selected_square.occupying_piece == None: self.previous_square.occupying_piece.move(selected_square)
+                print('Runs')
+                if selected_square.occupying_piece == None: 
+                    self.previous_square.occupying_piece.move(selected_square)
+                    self.previous_square.occupying_piece = None
+                    self.previous_square = None
+                    self.white_turn = not self.white_turn
                 elif selected_square.occupying_piece.color != self.previous_square.occupying_piece.color: 
                     self.previous_square.occupying_piece.capture(selected_square)
-                self.previous_square.occupying_piece = None
-                self.previous_square = None
-                return
+                    self.previous_square.occupying_piece = None
+                    self.previous_square = None
+                    self.white_turn = not self.white_turn
     
     def draw(self, display):
         for row in self.squares:
