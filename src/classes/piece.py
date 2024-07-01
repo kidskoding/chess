@@ -7,9 +7,9 @@ class Piece():
         self.y = pos[1]
         self.isWhite = isWhite
         self.color = 'white' if self.isWhite else 'black'
-        self.isClicked = False
         
-    # Gets the available moves for a piece
+    # Gets the available moves for a piece.
+    # MUST OVERRIDE BY CLASSES THAT EXTEND IT!
     def get_available_moves(self, board):
         pass
     

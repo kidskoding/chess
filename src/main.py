@@ -1,8 +1,6 @@
 import pygame
-import os
 
 from classes.Board import Board
-from classes.Square import Square
 
 pygame.init()
 
