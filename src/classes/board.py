@@ -13,15 +13,11 @@ class Board:
     WIDTH = 640
     HEIGHT = 640
     
-    '''
-        A board has the following:
-        - A 2D list of Squares
-        - A 2D list configuration of the starting board
-    '''
     def __init__(self):
         self.tile_width = self.WIDTH // 8
         self.tile_height = self.HEIGHT // 8
         self.white_turn = True
+        self.first_click_occurred = False
         self.squares = [[Square(x, y) for y in range(8)] for x in range(8)]
         self.previous_square = None
         self.config = [
@@ -60,37 +56,37 @@ class Board:
     def handle_click(self, mx, my):
         x, y = mx // self.tile_width, my // self.tile_height
         selected_square = self.get_square((x, y))
-        if selected_square.occupying_piece != None:
-            self.handle_first_click(selected_square)
-            self.previous_square = selected_square
-        else:
-            self.handle_second_click(selected_square)
+        if(selected_square.occupying_piece != None 
+            and ((self.white_turn and selected_square.occupying_piece.isWhite) 
+            or (not self.white_turn and not selected_square.occupying_piece.isWhite))):
+                self.handle_first_click(selected_square)
+                self.previous_square = selected_square
+                self.first_click_occurred = True
+        if(self.first_click_occurred and (selected_square.occupying_piece == None 
+            or (self.previous_square.occupying_piece.color != selected_square.occupying_piece.color))):
+                self.handle_second_click(selected_square)
+                self.clear_highlights()
+                self.first_click_occurred = False
     
     # Handle first click (select a piece of one's color)
     def handle_first_click(self, selected_square):
-        if((self.white_turn and selected_square.occupying_piece.isWhite) 
-            or (not self.white_turn and not selected_square.occupying_piece.isWhite)):
-            
-            self.clear_highlights()
-            
-            # highlight square and show available moves
-            self.select_square(selected_square)
-            available_moves = selected_square.occupying_piece.get_available_moves(self)
-            print(available_moves)
-            for square in selected_square.occupying_piece.get_available_moves(self):
-                self.highlight_square(square)
+        self.clear_highlights()
+        
+        # highlight square and show available moves
+        self.select_square(selected_square)
+        for square in selected_square.occupying_piece.get_available_moves(self):
+            self.highlight_square(square)
                 
     # Handle second click (moving/capturing a piece)
     def handle_second_click(self, selected_square):
         for square in self.previous_square.occupying_piece.get_available_moves(self):
             if selected_square == square:
-                if selected_square.occupying_piece == None:
-                    self.previous_square.occupying_piece.move(selected_square)
-                else:
+                if selected_square.occupying_piece == None: self.previous_square.occupying_piece.move(selected_square)
+                elif selected_square.occupying_piece.color != self.previous_square.occupying_piece.color: 
                     self.previous_square.occupying_piece.capture(selected_square)
                 self.previous_square.occupying_piece = None
                 self.previous_square = None
-                self.clear_highlights()
+                return
     
     def draw(self, display):
         for row in self.squares:
@@ -102,13 +98,11 @@ class Board:
             for x, piece in enumerate(row):
                 if(piece != ''):
                     square = self.get_square((x, y))
-                    
-                    self.get_square((4, 4)).occupying_piece = Knight(
-                        (4, 4),
-                        True,
+                    self.get_square((2, 5)).occupying_piece = Pawn(
+                        (2, 5),
+                        False,
                         self
                     )
-                    
                     if(piece[1] == 'R'):
                         square.occupying_piece = Rook(
                             (x, y), 
