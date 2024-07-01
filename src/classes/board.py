@@ -56,7 +56,6 @@ class Board:
     def handle_click(self, mx, my):
         x, y = mx // self.tile_width, my // self.tile_height
         selected_square = self.get_square((x, y))
-        print(selected_square.occupying_piece)
         if(selected_square.occupying_piece != None 
             and ((self.white_turn and selected_square.occupying_piece.isWhite) 
             or (not self.white_turn and not selected_square.occupying_piece.isWhite))):
@@ -99,6 +98,19 @@ class Board:
                 square.draw(display)
                 
     def setup_board(self):
+        square = self.get_square((3, 3))
+        square.occupying_piece = Queen(
+            square.pos,
+            True,
+            self
+        )
+        square2 = self.get_square((5, 5))
+        square2.occupying_piece = Queen(
+            square2.pos,
+            False,
+            self
+        )
+        '''
         for y, row in enumerate(self.config):
             for x, piece in enumerate(row):
                 if(piece != ''):
@@ -144,3 +156,4 @@ class Board:
                             True if piece[0] == 'w' else False,
                             self
                         )
+        '''
