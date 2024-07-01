@@ -47,6 +47,9 @@ class Board:
     def highlight_square(self, square):
         square.isHighlighted = True
     
+    def select_square(self, square):
+        square.isSelected = True
+    
     def handle_click(self, mx, my):
         x, y = mx // self.tile_width, my // self.tile_height
         clicked_square = self.get_square((x, y))
@@ -58,10 +61,11 @@ class Board:
                 # clear highlights
                 for row in self.squares:
                     for square in row:
-                        square.isHighlighted = False
+                        if square.isSelected: square.isSelected = False
+                        elif square.isHighlighted: square.isHighlighted = False
                 
                 # highlight square and show available moves
-                self.highlight_square(clicked_square)
+                self.select_square(clicked_square)
                 available_moves = clicked_square.occupying_piece.get_available_moves(self)
                 print(available_moves)
                 for square in available_moves:
@@ -77,11 +81,20 @@ class Board:
             for x, piece in enumerate(row):
                 if(piece != ''):
                     square = self.get_square((x, y))
+                    
+                    # test piece
                     self.get_square((1, 5)).occupying_piece = Pawn(
                         (1, 5),
+                        False,
+                        self
+                    )
+                    
+                    self.get_square((4, 4)).occupying_piece = Knight(
+                        (4, 4),
                         True,
                         self
                     )
+                    
                     if(piece[1] == 'R'):
                         square.occupying_piece = Rook(
                             (x, y), 
