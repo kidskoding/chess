@@ -49,7 +49,7 @@ class Square:
             pygame.draw.rect(display, self.highlight_color, self.rect)
         else:
             pygame.draw.rect(display, self.draw_color, self.rect)
-            
+           
         # Draw the piece
         if self.occupying_piece is not None:
             centering_rect = self.occupying_piece.img.get_rect()

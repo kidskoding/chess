@@ -23,6 +23,7 @@ class Board:
         self.tile_height = self.HEIGHT // 8
         self.white_turn = True
         self.squares = [[Square(x, y) for y in range(8)] for x in range(8)]
+        self.previous_square = None
         self.config = [
             ['bR', 'bN', 'bB', 'bQ', 'bK', 'bB', 'bN', 'bR'],
             ['bP', 'bP', 'bP', 'bP', 'bP', 'bP', 'bP', 'bP'],
@@ -49,28 +50,48 @@ class Board:
     
     def select_square(self, square):
         square.isSelected = True
+        
+    def clear_highlights(self):
+        for row in self.squares:
+            for square in row:
+                if square.isSelected: square.isSelected = False
+                elif square.isHighlighted: square.isHighlighted = False
     
     def handle_click(self, mx, my):
         x, y = mx // self.tile_width, my // self.tile_height
-        clicked_square = self.get_square((x, y))
-        print(clicked_square.x, clicked_square.y)
-        if clicked_square.occupying_piece != None:
-            if((self.white_turn and clicked_square.occupying_piece.isWhite) 
-                or (not self.white_turn and not clicked_square.occupying_piece.isWhite)):
+        selected_square = self.get_square((x, y))
+        if selected_square.occupying_piece != None:
+            self.handle_first_click(selected_square)
+            self.previous_square = selected_square
+        else:
+            self.handle_second_click(selected_square)
+    
+    # Handle first click (select a piece of one's color)
+    def handle_first_click(self, selected_square):
+        if((self.white_turn and selected_square.occupying_piece.isWhite) 
+            or (not self.white_turn and not selected_square.occupying_piece.isWhite)):
+            
+            self.clear_highlights()
+            
+            # highlight square and show available moves
+            self.select_square(selected_square)
+            available_moves = selected_square.occupying_piece.get_available_moves(self)
+            print(available_moves)
+            for square in selected_square.occupying_piece.get_available_moves(self):
+                self.highlight_square(square)
                 
-                # clear highlights
-                for row in self.squares:
-                    for square in row:
-                        if square.isSelected: square.isSelected = False
-                        elif square.isHighlighted: square.isHighlighted = False
-                
-                # highlight square and show available moves
-                self.select_square(clicked_square)
-                available_moves = clicked_square.occupying_piece.get_available_moves(self)
-                print(available_moves)
-                for square in available_moves:
-                    self.highlight_square(square)
-        
+    # Handle second click (moving/capturing a piece)
+    def handle_second_click(self, selected_square):
+        for square in self.previous_square.occupying_piece.get_available_moves(self):
+            if selected_square == square:
+                if selected_square.occupying_piece == None:
+                    self.previous_square.occupying_piece.move(selected_square)
+                else:
+                    self.previous_square.occupying_piece.capture(selected_square)
+                self.previous_square.occupying_piece = None
+                self.previous_square = None
+                self.clear_highlights()
+    
     def draw(self, display):
         for row in self.squares:
             for square in row:
@@ -84,7 +105,7 @@ class Board:
                     
                     self.get_square((4, 4)).occupying_piece = Knight(
                         (4, 4),
-                        False,
+                        True,
                         self
                     )
                     

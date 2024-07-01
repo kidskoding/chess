@@ -13,10 +13,11 @@ class Piece():
     def get_available_moves(self, board):
         pass
     
-    def move():
-        pass
-    
-    def capture():
+    def move(self, new_square):
+        self.x, self.y = new_square.pos
+        new_square.occupying_piece = self
+        
+    def capture(self):
         pass
     
     # Checks if the piece can move to a different square on the board
