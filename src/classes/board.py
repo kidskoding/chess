@@ -35,7 +35,7 @@ class Board:
     def get_square(self, pos):
         for row in self.squares:
             for square in row:
-                if (square.x, square.y) == (pos[0], pos[1]):
+                if((square.x, square.y) == (pos[0], pos[1])):
                     return square
                 
     def get_piece(self, pos):
@@ -98,19 +98,6 @@ class Board:
                 square.draw(display)
                 
     def setup_board(self):
-        square = self.get_square((3, 3))
-        square.occupying_piece = Queen(
-            square.pos,
-            True,
-            self
-        )
-        square2 = self.get_square((5, 5))
-        square2.occupying_piece = Queen(
-            square2.pos,
-            False,
-            self
-        )
-        '''
         for y, row in enumerate(self.config):
             for x, piece in enumerate(row):
                 if(piece != ''):
@@ -156,4 +143,3 @@ class Board:
                             True if piece[0] == 'w' else False,
                             self
                         )
-        '''

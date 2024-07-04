@@ -15,23 +15,23 @@ class Bishop(Piece):
         available_moves = []
         current_x, current_y = self.x, self.y
         
-        # Bottom right diagonal
-        for n in range(1, 8):
-            if(current_x + n < 8 and current_y - n > -1): 
-                bottomright_diagonal = board.get_square((current_x + n, current_y - n))
-                if(bottomright_diagonal.occupying_piece != None):
-                    if(bottomright_diagonal.occupying_piece.color != self.color): available_moves.append(bottomright_diagonal)     
-                    break
-                else: available_moves.append(bottomright_diagonal)
-                
         # Top right diagonal
         for n in range(1, 8):
-            if(current_x + n < 8 and current_y + n < 8): 
-                topright_diagonal = board.get_square((current_x + n, current_y + n))
+            if(current_x + n < 8 and current_y - n > -1): 
+                topright_diagonal = board.get_square((current_x + n, current_y - n))
                 if(topright_diagonal.occupying_piece != None):
-                    if(topright_diagonal.occupying_piece.color != self.color): available_moves.append(topright_diagonal)
+                    if(topright_diagonal.occupying_piece.color != self.color): available_moves.append(topright_diagonal)     
                     break
                 else: available_moves.append(topright_diagonal)
+                
+        # Bottom right diagonal
+        for n in range(1, 8):
+            if(current_x + n < 8 and current_y + n < 8):
+                bottomright_diagonal = board.get_square((current_x + n, current_y + n))
+                if(bottomright_diagonal.occupying_piece != None):
+                    if(bottomright_diagonal.occupying_piece.color != self.color): available_moves.append(bottomright_diagonal)
+                    break
+                else: available_moves.append(bottomright_diagonal)
         
         # Bottom left diagonal
         for n in range(1, 8):
