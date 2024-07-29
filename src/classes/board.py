@@ -144,12 +144,11 @@ class Board:
             pygame.quit()
             raise TimeoutError('Game cannot be played! In order to play Chess, both colors must have a king on the board!')
         
-        for piece in pieces_on_board:
-            available_moves = piece.get_available_moves(self)
-            for move in available_moves:
-                if(move.occupying_piece is not None 
-                    and isinstance(move.occupying_piece, King)):
-                        return True
+        for piece in self.get_pieces_on_board():
+            if piece.isWhite != (color == 'white'):
+                available_moves = piece.get_available_moves(self)
+                if king_square in available_moves:
+                    return True
         return False
                 
     def setup_board(self):
