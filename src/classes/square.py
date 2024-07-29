@@ -25,10 +25,12 @@ class Square:
         self.occupying_piece = None
         self.isHighlighted = False
         self.isSelected = False
+        self.isInCheck = False
         self.color = 'light' if (x + y) % 2 == 0 else 'dark'
         self.draw_color = (220, 208, 194) if self.color == 'light' else (53, 53, 53)
         self.highlight_color = (100, 249, 83) if self.color == 'light' else (0, 228, 10)
         self.select_color = (253, 255, 50)
+        self.check_color = (255, 0, 0)
         self.rect = pygame.Rect(
             self.abs_x,
             self.abs_y,
@@ -47,6 +49,8 @@ class Square:
             pygame.draw.rect(display, self.select_color, self.rect)
         elif self.isHighlighted:
             pygame.draw.rect(display, self.highlight_color, self.rect)
+        elif self.isInCheck:
+            pygame.draw.rect(display, self.check_color, self.rect)
         else:
             pygame.draw.rect(display, self.draw_color, self.rect)
            

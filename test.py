@@ -1,2 +1,7 @@
-for x in range(1, 8):
-    print(x)
+def test(x):
+    return x
+
+def test(x, y):
+    return x + y
+
+print(test(1, 2))
