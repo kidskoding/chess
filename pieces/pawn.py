@@ -38,7 +38,7 @@ class Pawn(Piece):
             available_captures.append(board.get_square((current_x + 1, temp_y)))
 
         for capture in available_captures:
-            if self.can_capture(capture):
+            if self.can_move(capture):
                 available_moves.append(capture)
 
         available_special_captures = []
@@ -64,4 +64,22 @@ class Pawn(Piece):
             available_moves.append(capture)
 
         return available_moves
+
+    def can_move(self, new_square):
+        delta_x = new_square.x - self.pos[0]
+        delta_y = abs(new_square.y - self.pos[1])
+
+        match delta_y:
+            case 1:
+                if new_square.x == 7 and new_square.y == 3:
+                    print(delta_x, new_square.occupying_piece)
+                if delta_x == 0 and new_square.occupying_piece is None:
+                    return True
+                if abs(delta_x) == 1 and new_square.occupying_piece is not None and new_square.occupying_piece.isWhite != self.isWhite:
+                    return True
+            case 2:
+                if (self.pos[1] == 6 or self.pos[1] == 1) and delta_x == 0 and new_square.occupying_piece is None and not self.last_moved_two:
+                    return True
+
+        return False
 

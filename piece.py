@@ -9,7 +9,12 @@ class Piece:
     # MUST OVERRIDE BY CLASSES THAT EXTEND IT!
     def get_available_moves(self, board):
         pass
-    
+
+    # Checks if the piece can move/capture to a specific square.
+    # MUST OVERRIDE BY CLASSES THAT EXTEND IT!
+    def can_move(self, new_square):
+        pass
+
     def move(self, new_square, board, is_pawn = False, en_passant = False):
         if is_pawn:
             self.last_moved_two = (abs(new_square.y - self.y) == 2)
@@ -22,10 +27,3 @@ class Piece:
     def capture(self, new_square, board):
         new_square.occupying_piece = None
         self.move(new_square, board)
-
-    def can_move(self, new_square):
-        return new_square.occupying_piece is None
-
-    # Checks if the piece can capture a different piece on a different square
-    def can_capture(self, new_square):
-        return new_square.occupying_piece is not None and self.isWhite != new_square.occupying_piece.isWhite

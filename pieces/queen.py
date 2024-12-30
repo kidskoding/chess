@@ -88,3 +88,8 @@ class Queen(Piece):
                 else: available_moves.append(topleft_diagonal)
         
         return available_moves
+
+    def can_move(self, new_square):
+        delta_x = abs(new_square.x - self.pos[0])
+        delta_y = abs(new_square.y - self.pos[1])
+        return (delta_x == delta_y or delta_x == 0 or delta_y == 0) and (new_square.occupying_piece is None or new_square.occupying_piece.isWhite != self.isWhite)

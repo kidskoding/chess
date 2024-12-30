@@ -159,7 +159,7 @@ class Board:
             if piece is not None:
                 available_moves = piece.get_available_moves(self)
                 for move in available_moves:
-                    if move.occupying_piece is not None and move.occupying_piece.can_capture(king_square):
+                    if move.occupying_piece is not None and move.occupying_piece.can_move(king_square):
                         return True
         else:
             for piece in self.get_pieces_on_board():
